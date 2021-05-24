@@ -1,0 +1,40 @@
+var canvas = document.querySelector("#canvas");
+var ctx = canvas.getContext('2d');
+var Points = [{x:100, y:100}, {x:20, y:200}]
+
+var Update = ()=>{
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Draw the shape
+  ctx.beginPath();
+  Points.forEach((point, index, arr) => {
+    if(arr.length > 1){
+
+          if(index == 0) 
+             ctx.moveTo(point.x, point.y);
+
+          if(index != arr.length -1) 
+             ctx.lineTo(arr[index + 1].x, arr[index + 1].y);
+
+       }
+  });
+  ctx.fillStyle = "#ddf7f7"; //this is the shapes color
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Draw the dots, this should be done last due to then they are above the path
+  ctx.fillStyle = "#000"
+  Points.forEach((point, index, arr) => {
+     ctx.beginPath();
+     ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
+     ctx.fill();
+  });
+
+}
+
+canvas.addEventListener("click", e=> {
+    Points.push({x: e.offsetX, y: e.offsetY});
+    Update();
+})
+
+Update();
